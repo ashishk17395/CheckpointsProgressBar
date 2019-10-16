@@ -176,7 +176,7 @@ public class CSProgressBar extends View {
             csMarkerTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
         if (csSubMarkerTypeface == null)
             csSubMarkerTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
-        if(csFilledTextTypeface==null)
+        if (csFilledTextTypeface == null)
             csFilledTextTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
     }
@@ -189,6 +189,12 @@ public class CSProgressBar extends View {
         setMeasuredDimension(width, height);
     }
 
+    /*
+ textHeight = textPaint.descent() - textPaint.ascent();
+ textOffset = (textHeight / 2) - textPaint.descent();
+ center = barBottom - barHeight/2
+ baseline = center + textOffset
+    * */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -219,7 +225,7 @@ public class CSProgressBar extends View {
                 textPaint.setTextSize(csMarkerTextSize);
                 textPaint.setTypeface(csMarkerTypeface);
                 csMarkerDrawable.setBounds((int) (barWidth + barLeft - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth + barLeft - csMarkerTextDrawablePadding / 2), (int) csMarkerHeight);
-                canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) * 1.0f, csMarkerHeight - (csMarkerHeight - csMarkerTextSize) / 2, textPaint);
+                canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) * 1.0f, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                 csMarkerDrawable.draw(canvas);
 
 
@@ -227,17 +233,16 @@ public class CSProgressBar extends View {
                 textPaint.setTextSize(csSubMarkerTextSize);
                 textPaint.setTypeface(csSubMarkerTypeface);
                 textPaint.setTextAlign(Paint.Align.CENTER);
-                if(!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i]))
-                {
+                if (!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i])) {
                     csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                             (int) (barBottom + csSubMarkerBarPadding),
                             (int) (barWidth + barLeft + csSubMarkerWidth / 2),
                             (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
                     csSubMarkerDrawable.draw(canvas);
-                    if(csSubMarkerTextPaddingBottom!=-1f)
+                    if (csSubMarkerTextPaddingBottom != -1f)
                         canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
                     else
-                        canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - (csSubMarkerHeight - csSubMarkerTextSize)/2  , textPaint);
+                        canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                 }
             }
         }
@@ -273,14 +278,14 @@ public class CSProgressBar extends View {
         updateProgressChanged();
         canvas.restore();
 
-        if(csCollapseOnCheckpoints)
-        {
-            if(clearedCheckPoint != -1)
-            {
+        if (csCollapseOnCheckpoints) {
+            if (clearedCheckPoint != -1) {
                 textPaint.setColor(csFilledTextColor);
                 textPaint.setTextSize(csFilledTextSize);
                 textPaint.setTypeface(csFilledTextTypeface);
-                canvas.drawText(csSubMarkers[clearedCheckPoint] , barLeft + cornerRad, (barBottom - (csBarHeight - csFilledTextSize)/2), textPaint);
+                canvas.drawText(csSubMarkers[clearedCheckPoint], barLeft + cornerRad,
+                        barBottom - csBarHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent()
+                        , textPaint);
             }
         }
 
@@ -580,7 +585,6 @@ public class CSProgressBar extends View {
     public void setCsFilledTextSize(float csFilledTextSize) {
         this.csFilledTextSize = csFilledTextSize;
     }
-
 
 
     //endregion
