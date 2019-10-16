@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CSProgressBar">
+        <attr name="csProgress" format="integer"/>
+        <attr name="csSize" format="integer"/>
+        <attr name="csBarHeight" format="dimension"/>
+        <attr name="csFilledColor" fomrat="color"/>
+        <attr name="csUnfilledColor" format="color"/>
+
+        <attr name="csCheckpoints" format="reference"/>
+        <attr name="csCheckpointColors" fomrat="reference"/>
+
+        <attr name="csMarkers" format="reference"/>
+        <attr name="csMarkerTextColor" format="color"/>
+        <attr name="csMarkerDrawable" format="integer"/>
+        <attr name="csMarkerTextSize" format="dimension"/>
+        <attr name="csMarkerHeight" format="dimension"/>
+        <attr name="csMarkerWidth" format="dimension"/>
+        <attr name="csMarkerBarPadding" format="dimension"/>
+        <attr name="csMarkerTextDrawablePadding" format="dimension"/>
+        <!--sbMarkerTextFont, Style-->
+        <attr name="csSubMarkers" format="reference"/>
+        <attr name="csSubMarkerTextColor" format="color"/>
+        <attr name="csSubMarkerDrawable" format="integer"/>
+        <attr name="csSubMarkerTextSize" format="dimension"/>
+        <attr name="csSubMarkerHeight" format="dimension"/>
+        <attr name="csSubMarkerWidth" format="dimension"/>
+        <attr name="csSubMarkerBarPadding" format="dimension"/>
+        <attr name="csSubMarkerTextPaddingBottom" format="dimension"/>
+        <!--sbSubMarkerTextFont, Style-->
+        <attr name="csFilledText" format="string"/>
+        <attr name="csFormattedFilledText" format="boolean"/>
+        <attr name="csIsCollapsed" format="boolean"/>
+
+    </declare-styleable>
+
+</resources>

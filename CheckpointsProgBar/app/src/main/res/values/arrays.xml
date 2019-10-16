@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="rainbow">
+        <item>@color/green_light</item>
+        <item>@color/red</item>
+        <item>@color/orange</item>
+        <item>@color/yellow</item>
+    </array>
+    <integer-array name="checkpoints">
+        <item>30</item>
+        <item>70</item>
+        <item>130</item>
+        <item>180</item>
+    </integer-array>
+    <string-array name="subMarkers">
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+        <item>d</item>
+    </string-array>
+    <string-array name="markers">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+    </string-array>
+</resources>

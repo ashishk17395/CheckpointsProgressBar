@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    >
+
+    <Button
+        android:id="@+id/btn"
+        android:text="ResetProgBar"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"/>
+
+    <com.exp.checkpointsprogbar.CSProgressBar
+        android:id="@+id/progBar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+
+        app:csMarkers="@array/markers"
+        app:csMarkerTextSize="16sp"
+        app:csMarkerBarPadding="5dp"
+        app:csMarkerHeight="20dp"
+        app:csMarkerWidth="40dp"
+        app:csMarkerTextColor="@color/black"
+        app:csMarkerDrawable="@drawable/ic"
+        app:csMarkerTextDrawablePadding="10dp"
+
+        app:csSubMarkers="@array/subMarkers"
+        app:csSubMarkerTextSize="14sp"
+        app:csSubMarkerBarPadding="10dp"
+        app:csSubMarkerHeight="30dp"
+        app:csSubMarkerWidth="40dp"
+        app:csSubMarkerTextColor="@color/black"
+        app:csSubMarkerDrawable="@drawable/ic_chat"
+
+        app:csCheckpoints="@array/checkpoints"
+        app:csCheckpointColors="@array/rainbow"
+        app:csFilledColor="@color/green_dark"
+        app:csBarHeight="20dp"
+        app:csIsCollapsed="false"
+        />
+
+
+    <Button
+        android:id="@+id/incProgBtn"
+        android:text="IncreaseProgBar"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="progress text"/>
+    <TextView
+        android:id="@+id/checkPointReached"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="checkPointReached"
+        />
+</LinearLayout>
+
