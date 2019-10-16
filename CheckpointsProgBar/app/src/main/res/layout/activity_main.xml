@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_margin="5dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="0dp"
 
         app:csMarkers="@array/markers"
         app:csMarkerTextSize="16sp"
@@ -35,7 +35,6 @@
 
         app:csSubMarkers="@array/subMarkers"
         app:csSubMarkerTextSize="14sp"
-        app:csSubMarkerBarPadding="10dp"
         app:csSubMarkerHeight="30dp"
         app:csSubMarkerWidth="40dp"
         app:csSubMarkerTextColor="@color/black"
@@ -44,8 +43,10 @@
         app:csCheckpoints="@array/checkpoints"
         app:csCheckpointColors="@array/rainbow"
         app:csFilledColor="@color/green_dark"
+        app:csFilledTextSize="14sp"
         app:csBarHeight="20dp"
         app:csIsCollapsed="false"
+        app:csCollapseOnCheckpoints = "false"
         />
 
 

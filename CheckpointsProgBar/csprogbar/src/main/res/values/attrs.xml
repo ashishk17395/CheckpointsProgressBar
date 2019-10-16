@@ -29,8 +29,11 @@
         <attr name="csSubMarkerTextPaddingBottom" format="dimension"/>
 
         <attr name="csFilledText" format="string"/>
+        <attr name="csFilledTextColor" format="color"/>
+        <attr name="csFilledTextSize" format="dimension"/>
         <attr name="csFormattedFilledText" format="boolean"/>
         <attr name="csIsCollapsed" format="boolean"/>
+        <attr name="csCollapseOnCheckpoints" format="boolean"/>
 
     </declare-styleable>
 

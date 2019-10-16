@@ -48,7 +48,12 @@ public class CSProgressBar extends View {
 
     String csFilledText;
     boolean csFormatFilledText;
+    int csFilledTextColor;
+    float csFilledTextSize;
+    Typeface csFilledTextTypeface;
+
     boolean csIsCollapsed;
+    boolean csCollapseOnCheckpoints;
 
     private Paint paint;
     private Path path;
@@ -152,8 +157,12 @@ public class CSProgressBar extends View {
 
 
             setCsFilledText(typedArray.getString(R.styleable.CSProgressBar_csFilledText));
+            setCsFilledTextColor(typedArray.getColor(R.styleable.CSProgressBar_csFilledTextColor, Color.WHITE));
+            setCsFilledTextSize(typedArray.getDimension(R.styleable.CSProgressBar_csFilledTextSize, 11f));
             setCsFormatFilledText(typedArray.getBoolean(R.styleable.CSProgressBar_csFormattedFilledText, true));
             setCsIsCollapsed(typedArray.getBoolean(R.styleable.CSProgressBar_csIsCollapsed, false));
+            setCsCollapseOnCheckpoints(typedArray.getBoolean(R.styleable.CSProgressBar_csCollapseOnCheckpoints, true));
+
 
         } finally {
             typedArray.recycle();
@@ -167,6 +176,8 @@ public class CSProgressBar extends View {
             csMarkerTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
         if (csSubMarkerTypeface == null)
             csSubMarkerTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
+        if(csFilledTextTypeface==null)
+            csFilledTextTypeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
 
     }
 
@@ -216,15 +227,18 @@ public class CSProgressBar extends View {
                 textPaint.setTextSize(csSubMarkerTextSize);
                 textPaint.setTypeface(csSubMarkerTypeface);
                 textPaint.setTextAlign(Paint.Align.CENTER);
-                csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
-                        (int) (barBottom + csSubMarkerBarPadding),
-                        (int) (barWidth + barLeft + csSubMarkerWidth / 2),
-                        (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
-                csSubMarkerDrawable.draw(canvas);
-                if(csSubMarkerTextPaddingBottom!=-1f)
-                    canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
-                else
-                    canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csMarkerBarPadding + (csSubMarkerHeight + csSubMarkerTextSize)/2  , textPaint);
+                if(!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i]))
+                {
+                    csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
+                            (int) (barBottom + csSubMarkerBarPadding),
+                            (int) (barWidth + barLeft + csSubMarkerWidth / 2),
+                            (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
+                    csSubMarkerDrawable.draw(canvas);
+                    if(csSubMarkerTextPaddingBottom!=-1f)
+                        canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
+                    else
+                        canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - (csSubMarkerHeight - csSubMarkerTextSize)/2  , textPaint);
+                }
             }
         }
 
@@ -258,6 +272,17 @@ public class CSProgressBar extends View {
         canvas.drawRoundRect(barLeft, barTop, barRight, barBottom, cornerRad, cornerRad, paint);
         updateProgressChanged();
         canvas.restore();
+
+        if(csCollapseOnCheckpoints)
+        {
+            if(clearedCheckPoint != -1)
+            {
+                textPaint.setColor(csFilledTextColor);
+                textPaint.setTextSize(csFilledTextSize);
+                textPaint.setTypeface(csFilledTextTypeface);
+                canvas.drawText(csSubMarkers[clearedCheckPoint] , barLeft + cornerRad, (barBottom - (csBarHeight - csFilledTextSize)/2), textPaint);
+            }
+        }
 
 
     }
@@ -502,6 +527,62 @@ public class CSProgressBar extends View {
         this.csSubMarkerTextPaddingBottom = csSubMarkerTextPaddingBottom;
         postInvalidate();
     }
+
+    public boolean isCsCollapseOnCheckpoints() {
+        return csCollapseOnCheckpoints;
+    }
+
+    public void setCsCollapseOnCheckpoints(boolean csCollapseOnCheckpoints) {
+        this.csCollapseOnCheckpoints = csCollapseOnCheckpoints;
+        postInvalidate();
+    }
+
+
+    public Typeface getCsMarkerTypeface() {
+        return csMarkerTypeface;
+    }
+
+    public void setCsMarkerTypeface(Typeface csMarkerTypeface) {
+        this.csMarkerTypeface = csMarkerTypeface;
+        postInvalidate();
+    }
+
+    public Typeface getCsSubMarkerTypeface() {
+        return csSubMarkerTypeface;
+    }
+
+    public void setCsSubMarkerTypeface(Typeface csSubMarkerTypeface) {
+        this.csSubMarkerTypeface = csSubMarkerTypeface;
+        postInvalidate();
+    }
+
+    public Typeface getCsFilledTextTypeface() {
+        return csFilledTextTypeface;
+    }
+
+    public void setCsFilledTextTypeface(Typeface csFilledTextTypeface) {
+        this.csFilledTextTypeface = csFilledTextTypeface;
+        postInvalidate();
+    }
+
+    public int getCsFilledTextColor() {
+        return csFilledTextColor;
+    }
+
+    public void setCsFilledTextColor(int csFilledTextColor) {
+        this.csFilledTextColor = csFilledTextColor;
+    }
+
+    public float getCsFilledTextSize() {
+        return csFilledTextSize;
+    }
+
+    public void setCsFilledTextSize(float csFilledTextSize) {
+        this.csFilledTextSize = csFilledTextSize;
+    }
+
+
+
     //endregion
 
     //region Listeners
@@ -523,7 +604,6 @@ public class CSProgressBar extends View {
             clearedCheckPoint = currentClearedIndex;
             mListener.onCheckPointCleared(clearedCheckPoint);
         }
-
     }
 
     public void setCsProgressChangeListener(ProgressBarChangedListener listener) {
