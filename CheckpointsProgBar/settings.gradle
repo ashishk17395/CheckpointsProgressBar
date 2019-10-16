@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':csprogbar'
 rootProject.name='CheckpointsProgBar'

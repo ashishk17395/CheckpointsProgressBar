@@ -16,7 +16,7 @@
         android:textAllCaps="false"
         android:layout_height="wrap_content"/>
 
-    <com.exp.checkpointsprogbar.CSProgressBar
+    <com.exp.csprogbar.CSProgressBar
         android:id="@+id/progBar"
         android:layout_width="match_parent"
         android:layout_height="30dp"

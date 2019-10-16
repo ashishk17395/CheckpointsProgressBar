@@ -1,4 +1,4 @@
-package com.exp.checkpointsprogbar;
+package com.exp.csprogbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;

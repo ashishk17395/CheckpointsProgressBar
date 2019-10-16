@@ -18,7 +18,7 @@
         <attr name="csMarkerWidth" format="dimension"/>
         <attr name="csMarkerBarPadding" format="dimension"/>
         <attr name="csMarkerTextDrawablePadding" format="dimension"/>
-        <!--sbMarkerTextFont, Style-->
+
         <attr name="csSubMarkers" format="reference"/>
         <attr name="csSubMarkerTextColor" format="color"/>
         <attr name="csSubMarkerDrawable" format="integer"/>
@@ -27,7 +27,7 @@
         <attr name="csSubMarkerWidth" format="dimension"/>
         <attr name="csSubMarkerBarPadding" format="dimension"/>
         <attr name="csSubMarkerTextPaddingBottom" format="dimension"/>
-        <!--sbSubMarkerTextFont, Style-->
+
         <attr name="csFilledText" format="string"/>
         <attr name="csFormattedFilledText" format="boolean"/>
         <attr name="csIsCollapsed" format="boolean"/>
