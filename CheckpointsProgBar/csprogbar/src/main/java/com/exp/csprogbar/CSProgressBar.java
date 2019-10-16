@@ -197,8 +197,8 @@ public class CSProgressBar extends View {
         clippingRect.set(barLeft, barTop, barRight, barBottom);
         path.addRoundRect(clippingRect, cornerRad, cornerRad, Path.Direction.CW);
 
+        //draw checkpoint markers
         if (!csIsCollapsed) {
-            //draw checkpoint markers
             for (int i = csCheckpoints.length - 1; i >= 0; i--) {
                 float barWidth = mainBarWidth * csCheckpoints[i] * 1.0f / csSize;
                 if (barWidth > mainBarWidth - cornerRad)
@@ -207,8 +207,8 @@ public class CSProgressBar extends View {
                 textPaint.setColor(csMarkerTextColor);
                 textPaint.setTextSize(csMarkerTextSize);
                 textPaint.setTypeface(csMarkerTypeface);
-                csMarkerDrawable.setBounds((int) (barWidth - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth - csMarkerTextDrawablePadding / 2), (int) csMarkerHeight);
-                canvas.drawText(csMarkers[i], ((int) (barWidth + csMarkerTextDrawablePadding / 2)) * 1.0f, csMarkerHeight - (csMarkerHeight - csMarkerTextSize) / 2, textPaint);
+                csMarkerDrawable.setBounds((int) (barWidth + barLeft - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth + barLeft - csMarkerTextDrawablePadding / 2), (int) csMarkerHeight);
+                canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) * 1.0f, csMarkerHeight - (csMarkerHeight - csMarkerTextSize) / 2, textPaint);
                 csMarkerDrawable.draw(canvas);
 
 
@@ -216,26 +216,28 @@ public class CSProgressBar extends View {
                 textPaint.setTextSize(csSubMarkerTextSize);
                 textPaint.setTypeface(csSubMarkerTypeface);
                 textPaint.setTextAlign(Paint.Align.CENTER);
-                csSubMarkerDrawable.setBounds((int) (barWidth - csSubMarkerWidth / 2),
+                csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                         (int) (barBottom + csSubMarkerBarPadding),
-                        (int) (barWidth + csSubMarkerWidth / 2),
+                        (int) (barWidth + barLeft + csSubMarkerWidth / 2),
                         (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
                 csSubMarkerDrawable.draw(canvas);
                 if(csSubMarkerTextPaddingBottom!=-1f)
-                    canvas.drawText(csSubMarkers[i], barWidth, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
+                    canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
                 else
-                    canvas.drawText(csSubMarkers[i], barWidth, barBottom + csMarkerBarPadding + (csSubMarkerHeight + csSubMarkerTextSize)/2  , textPaint);
+                    canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csMarkerBarPadding + (csSubMarkerHeight + csSubMarkerTextSize)/2  , textPaint);
             }
         }
 
 
+        //draw checkpoints
         for (int i = csCheckpoints.length - 1; i >= 0; i--) {
             paint.setColor(csCheckpointColors[i]);
             float barWidth = mainBarWidth * csCheckpoints[i] * 1.0f / csSize;
             canvas.clipPath(path);
-            canvas.drawRect(barLeft, barTop, barWidth, barBottom, paint);
+            canvas.drawRect(barLeft, barTop, barWidth + barLeft, barBottom, paint);
         }
 
+        //Incase of collapsed
         if (csIsCollapsed) {
             for (int i = csCheckpoints.length - 2; i >= -1; i--) {
                 float barWidth = i != -1 ? mainBarWidth * csCheckpoints[i] * 1.0f / csSize + cornerRad / 2 : cornerRad / 2;
@@ -252,7 +254,7 @@ public class CSProgressBar extends View {
         paint.setColor(csFilledColor);
         float progWidth = (csProgress * 1.0f / csSize) * mainBarWidth;
         canvas.save();
-        canvas.clipRect(barLeft, barTop, progWidth, barBottom);
+        canvas.clipRect(barLeft, barTop, progWidth + barLeft, barBottom);
         canvas.drawRoundRect(barLeft, barTop, barRight, barBottom, cornerRad, cornerRad, paint);
         updateProgressChanged();
         canvas.restore();
