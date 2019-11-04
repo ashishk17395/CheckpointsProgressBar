@@ -288,6 +288,18 @@ public class CSProgressBar extends View {
                         , textPaint);
             }
         }
+        else
+        {
+            if(csFilledText!=null && !csFilledText.isEmpty())
+            {
+                textPaint.setColor(csFilledTextColor);
+                textPaint.setTextSize(csFilledTextSize);
+                textPaint.setTypeface(csFilledTextTypeface);
+                canvas.drawText(csFilledText, barLeft + cornerRad,
+                        barBottom - csBarHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent()
+                        , textPaint);
+            }
+        }
 
 
     }
