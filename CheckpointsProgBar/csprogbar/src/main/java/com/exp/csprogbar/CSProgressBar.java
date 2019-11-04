@@ -104,33 +104,47 @@ public class CSProgressBar extends View {
             setCsFilledColor(typedArray.getColor(R.styleable.CSProgressBar_csFilledColor, Color.BLUE));
             setCsUnfilledColor(typedArray.getColor(R.styleable.CSProgressBar_csUnfilledColor, Color.GRAY));
 
-            TypedArray tCh = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpoints, 0));
-            int[] _chkpntsArr = new int[tCh.length()];
-            for (int i = 0; i < _chkpntsArr.length; i++)
-                _chkpntsArr[i] = tCh.getInt(i, 0);
-            setCsCheckpoints(_chkpntsArr);
-            tCh.recycle();
+            if (typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpoints, 0) != 0) {
+                TypedArray tCh = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpoints, 0));
+                int[] _chkpntsArr = new int[tCh.length()];
+                for (int i = 0; i < _chkpntsArr.length; i++)
+                    _chkpntsArr[i] = tCh.getInt(i, 0);
+                setCsCheckpoints(_chkpntsArr);
+                tCh.recycle();
+            } else
+                setCsCheckpoints(new int[0]);
 
-            TypedArray tChColors = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0));
-            int[] _colorArr = new int[tChColors.length()];
-            for (int i = 0; i < _colorArr.length; i++) {
-                if (tChColors.peekValue(i).type == TypedValue.TYPE_ATTRIBUTE) {
-                    TypedValue typedValue = new TypedValue();
-                    getContext().getTheme().resolveAttribute(tChColors.peekValue(i).data, typedValue, true);
-                    _colorArr[i] = typedValue.data;
-                } else {
-                    _colorArr[i] = tChColors.getColor(i, 0);
+            if(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0)!=0)
+            {
+
+                TypedArray tChColors = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0));
+                int[] _colorArr = new int[tChColors.length()];
+                for (int i = 0; i < _colorArr.length; i++) {
+                    if (tChColors.peekValue(i).type == TypedValue.TYPE_ATTRIBUTE) {
+                        TypedValue typedValue = new TypedValue();
+                        getContext().getTheme().resolveAttribute(tChColors.peekValue(i).data, typedValue, true);
+                        _colorArr[i] = typedValue.data;
+                    } else {
+                        _colorArr[i] = tChColors.getColor(i, 0);
+                    }
                 }
-            }
-            setCsCheckpointColors(_colorArr);
-            tChColors.recycle();
+                setCsCheckpointColors(_colorArr);
+                tChColors.recycle();
+            } else
+                setCsCheckpointColors(new int[0]);
 
-            TypedArray tMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0));
-            String[] _tMarkArr = new String[tMark.length()];
-            for (int i = 0; i < _tMarkArr.length; i++)
-                _tMarkArr[i] = tMark.getString(i);
-            setCsMarkers(_tMarkArr);
-            tMark.recycle();
+            if(typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0)!=0)
+            {
+                TypedArray tMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0));
+                String[] _tMarkArr = new String[tMark.length()];
+                for (int i = 0; i < _tMarkArr.length; i++)
+                    _tMarkArr[i] = tMark.getString(i);
+                setCsMarkers(_tMarkArr);
+                tMark.recycle();
+            }
+            else
+                setCsMarkers(new String[0]);
+
 
             setCsMarkerTextColor(typedArray.getColor(R.styleable.CSProgressBar_csMarkerTextColor, Color.BLACK));
             setCsMarkerDrawable(typedArray.getDrawable(R.styleable.CSProgressBar_csMarkerDrawable));
@@ -140,12 +154,18 @@ public class CSProgressBar extends View {
             setCsMarkerBarPadding(typedArray.getDimension(R.styleable.CSProgressBar_csMarkerBarPadding, 0f));
             setCsMarkerTextDrawablePadding(typedArray.getDimension(R.styleable.CSProgressBar_csMarkerTextDrawablePadding, 0f));
 
-            TypedArray tSubMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0));
-            String[] _tSubMarkArr = new String[tSubMark.length()];
-            for (int i = 0; i < _tSubMarkArr.length; i++)
-                _tSubMarkArr[i] = tSubMark.getString(i);
-            setCsSubMarkers(_tSubMarkArr);
-            tSubMark.recycle();
+            if(typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0)!=0)
+            {
+                TypedArray tSubMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0));
+                String[] _tSubMarkArr = new String[tSubMark.length()];
+                for (int i = 0; i < _tSubMarkArr.length; i++)
+                    _tSubMarkArr[i] = tSubMark.getString(i);
+                setCsSubMarkers(_tSubMarkArr);
+                tSubMark.recycle();
+            }
+            else
+                setCsMarkers(new String[0]);
+
 
             setCsSubMarkerTextColor(typedArray.getColor(R.styleable.CSProgressBar_csSubMarkerTextColor, Color.BLACK));
             setCsSubMarkerDrawable(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawable));
@@ -287,11 +307,8 @@ public class CSProgressBar extends View {
                         barBottom - csBarHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent()
                         , textPaint);
             }
-        }
-        else
-        {
-            if(csFilledText!=null && !csFilledText.isEmpty())
-            {
+        } else {
+            if (csFilledText != null && !csFilledText.isEmpty()) {
                 textPaint.setColor(csFilledTextColor);
                 textPaint.setTextSize(csFilledTextSize);
                 textPaint.setTypeface(csFilledTextTypeface);
