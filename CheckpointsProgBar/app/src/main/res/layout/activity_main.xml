@@ -39,6 +39,8 @@
         app:csSubMarkerWidth="40dp"
         app:csSubMarkerTextColor="@color/black"
         app:csSubMarkerDrawable="@drawable/ic_chat"
+        app:csSubMarkerDrawableDisabled="@drawable/ic_chat_disabled"
+
 
         app:csCheckpoints="@array/checkpoints"
         app:csCheckpointColors="@array/rainbow"
@@ -46,7 +48,7 @@
         app:csFilledTextSize="14sp"
         app:csBarHeight="20dp"
         app:csIsCollapsed="false"
-        app:csCollapseOnCheckpoints = "false"
+        app:csCollapseOnCheckpoints = "true"
         />
 
 
