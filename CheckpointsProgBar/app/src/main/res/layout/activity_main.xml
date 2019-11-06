@@ -49,12 +49,22 @@
         app:csBarHeight="20dp"
         app:csIsCollapsed="false"
         app:csCollapseOnCheckpoints = "true"
+        app:csUnfilledEndDrawable="@drawable/ic"
+        app:csUnfilledEndDrawableVisible="true"
+        app:csUnfilledEndDrawableHeight="10dp"
+        app:csUnfilledEndDrawableWidth="10dp"
         />
 
 
     <Button
         android:id="@+id/incProgBtn"
         android:text="IncreaseProgBar"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/showHideDrawableBtn"
+        android:text="showHIdeDrawble"
         android:layout_width="match_parent"
         android:textAllCaps="false"
         android:layout_height="wrap_content"/>

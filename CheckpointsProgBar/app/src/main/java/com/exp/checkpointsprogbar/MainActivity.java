@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     CSProgressBar csProg;
     Button resetButton;
-    Button increaseProg;
+    Button increaseProg, showHideDrawableBtn;
     TextView checkPointReached, progressText;
     int count = 0;
 
@@ -27,11 +27,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         csProg = (CSProgressBar) findViewById(R.id.progBar);
         resetButton = (Button) findViewById(R.id.btn);
         increaseProg = (Button) findViewById(R.id.incProgBtn);
+        showHideDrawableBtn = (Button) findViewById(R.id.showHideDrawableBtn);
         progressText = (TextView) findViewById(R.id.progressText);
         checkPointReached = (TextView) findViewById(R.id.checkPointReached);
         csProg.setCsSize(200);
         resetButton.setOnClickListener(this);
         increaseProg.setOnClickListener(this);
+        showHideDrawableBtn.setOnClickListener(this);
 
         csProg.setCsProgressChangeListener(new CSProgressBar.ProgressBarChangedListener() {
             @Override
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.incProgBtn:
                 csProg.setCsProgress(csProg.getCsProgress() + 1);
                 break;
+            case R.id.showHideDrawableBtn:
+                csProg.setCsUnfilledEndDrawableVisible(!csProg.isCsUnfilledEndDrawableVisible());
             default:
                 break;
         }

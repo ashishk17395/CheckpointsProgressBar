@@ -29,6 +29,11 @@
         <attr name="csSubMarkerBarPadding" format="dimension"/>
         <attr name="csSubMarkerTextPaddingBottom" format="dimension"/>
 
+        <attr name="csUnfilledEndDrawable" format="integer"/>
+        <attr name="csUnfilledEndDrawableVisible" format="boolean"/>
+        <attr name="csUnfilledEndDrawableWidth" format="dimension"/>
+        <attr name="csUnfilledEndDrawableHeight" format="dimension"/>
+
         <attr name="csFilledText" format="string"/>
         <attr name="csFilledTextColor" format="color"/>
         <attr name="csFilledTextSize" format="dimension"/>

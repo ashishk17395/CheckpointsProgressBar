@@ -47,6 +47,11 @@ public class CSProgressBar extends View {
     Typeface csSubMarkerTypeface;
     float csSubMarkerTextPaddingBottom;
 
+    Drawable csUnfilledEndDrawable;
+    boolean csUnfilledEndDrawableVisible;
+    float csUnfilledEndDrawableWidth;
+    float csUnfilledEndDrawableHeight;
+
     String csFilledText;
     boolean csFormatFilledText;
     int csFilledTextColor;
@@ -115,8 +120,7 @@ public class CSProgressBar extends View {
             } else
                 setCsCheckpoints(new int[0]);
 
-            if(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0)!=0)
-            {
+            if (typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0) != 0) {
 
                 TypedArray tChColors = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csCheckpointColors, 0));
                 int[] _colorArr = new int[tChColors.length()];
@@ -134,16 +138,14 @@ public class CSProgressBar extends View {
             } else
                 setCsCheckpointColors(new int[0]);
 
-            if(typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0)!=0)
-            {
+            if (typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0) != 0) {
                 TypedArray tMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csMarkers, 0));
                 String[] _tMarkArr = new String[tMark.length()];
                 for (int i = 0; i < _tMarkArr.length; i++)
                     _tMarkArr[i] = tMark.getString(i);
                 setCsMarkers(_tMarkArr);
                 tMark.recycle();
-            }
-            else
+            } else
                 setCsMarkers(new String[0]);
 
 
@@ -155,22 +157,20 @@ public class CSProgressBar extends View {
             setCsMarkerBarPadding(typedArray.getDimension(R.styleable.CSProgressBar_csMarkerBarPadding, 0f));
             setCsMarkerTextDrawablePadding(typedArray.getDimension(R.styleable.CSProgressBar_csMarkerTextDrawablePadding, 0f));
 
-            if(typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0)!=0)
-            {
+            if (typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0) != 0) {
                 TypedArray tSubMark = getResources().obtainTypedArray(typedArray.getResourceId(R.styleable.CSProgressBar_csSubMarkers, 0));
                 String[] _tSubMarkArr = new String[tSubMark.length()];
                 for (int i = 0; i < _tSubMarkArr.length; i++)
                     _tSubMarkArr[i] = tSubMark.getString(i);
                 setCsSubMarkers(_tSubMarkArr);
                 tSubMark.recycle();
-            }
-            else
+            } else
                 setCsMarkers(new String[0]);
 
 
             setCsSubMarkerTextColor(typedArray.getColor(R.styleable.CSProgressBar_csSubMarkerTextColor, Color.BLACK));
             setCsSubMarkerDrawable(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawable));
-            if(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawableDisabled)!=null)
+            if (typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawableDisabled) != null)
                 setCsSubMarkerDrawableDisabled(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawableDisabled));
             else
                 setCsSubMarkerDrawableDisabled(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawable));
@@ -181,6 +181,11 @@ public class CSProgressBar extends View {
             setCsSubMarkerBarPadding(typedArray.getDimension(R.styleable.CSProgressBar_csSubMarkerBarPadding, 0f));
             setCsSubMarkerTextPaddingBottom(typedArray.getDimension(R.styleable.CSProgressBar_csSubMarkerTextPaddingBottom, -1f));
 
+            if (typedArray.getDrawable(R.styleable.CSProgressBar_csUnfilledEndDrawable) != null)
+                setCsUnfilledEndDrawable(typedArray.getDrawable(R.styleable.CSProgressBar_csUnfilledEndDrawable));
+            setCsUnfilledEndDrawableVisible(typedArray.getBoolean(R.styleable.CSProgressBar_csUnfilledEndDrawableVisible, false));
+            setCsUnfilledEndDrawableHeight(typedArray.getDimension(R.styleable.CSProgressBar_csUnfilledEndDrawableHeight, 0));
+            setCsUnfilledEndDrawableWidth(typedArray.getDimension(R.styleable.CSProgressBar_csUnfilledEndDrawableWidth, 0));
 
             setCsFilledText(typedArray.getString(R.styleable.CSProgressBar_csFilledText));
             setCsFilledTextColor(typedArray.getColor(R.styleable.CSProgressBar_csFilledTextColor, Color.WHITE));
@@ -240,6 +245,9 @@ public class CSProgressBar extends View {
         clippingRect.set(barLeft, barTop, barRight, barBottom);
         path.addRoundRect(clippingRect, cornerRad, cornerRad, Path.Direction.CW);
 
+
+
+
         //draw checkpoint markers
         if (!csIsCollapsed) {
             for (int i = csCheckpoints.length - 1; i >= 0; i--) {
@@ -261,17 +269,14 @@ public class CSProgressBar extends View {
                 textPaint.setTextAlign(Paint.Align.CENTER);
 
 
-
                 if (!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i])) {
-                    if(i==clearedCheckPoint+1)
-                    {
+                    if (i == clearedCheckPoint + 1) {
                         csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                                 (int) (barBottom + csSubMarkerBarPadding),
                                 (int) (barWidth + barLeft + csSubMarkerWidth / 2),
                                 (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
                         csSubMarkerDrawable.draw(canvas);
-                    }else
-                    {
+                    } else {
                         csSubMarkerDrawableDisabled.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                                 (int) (barBottom + csSubMarkerBarPadding),
                                 (int) (barWidth + barLeft + csSubMarkerWidth / 2),
@@ -296,6 +301,24 @@ public class CSProgressBar extends View {
             canvas.drawRect(barLeft, barTop, barWidth + barLeft, barBottom, paint);
         }
 
+        if (csUnfilledEndDrawable != null && csUnfilledEndDrawableVisible) {
+            if (csIsCollapsed) {
+                csUnfilledEndDrawable.setBounds(
+                        (int) (barLeft + mainBarWidth / 2 - csUnfilledEndDrawableWidth / 2),
+                        (int) (barTop + (csBarHeight - csUnfilledEndDrawableHeight) / 2),
+                        (int) (barLeft + mainBarWidth / 2 + csUnfilledEndDrawableWidth / 2),
+                        (int) (barBottom - (csBarHeight - csUnfilledEndDrawableHeight) / 2));
+                csUnfilledEndDrawable.draw(canvas);
+            } else {
+                csUnfilledEndDrawable.setBounds(
+                        (int) (barRight - cornerRad - csUnfilledEndDrawableWidth),
+                        (int) (barTop + (csBarHeight - csUnfilledEndDrawableHeight) / 2),
+                        (int) (barRight - cornerRad),
+                        (int) (barBottom - (csBarHeight - csUnfilledEndDrawableHeight) / 2));
+                csUnfilledEndDrawable.draw(canvas);
+            }
+        }
+
         //Incase of collapsed
         if (csIsCollapsed) {
             for (int i = csCheckpoints.length - 2; i >= -1; i--) {
@@ -305,7 +328,6 @@ public class CSProgressBar extends View {
                 csMarkerDrawable.setBounds((int) (barWidth - getCsMarkerTextSize()), (int) (barTop + (csBarHeight - csMarkerTextSize) / 2), (int) (barWidth), (int) getCsMarkerTextSize());
                 canvas.drawText(csMarkers[i + 1], barWidth, (int) (barBottom - (csBarHeight - csMarkerTextSize) / 2), textPaint);
                 csMarkerDrawable.draw(canvas);
-
             }
         }
 
@@ -340,7 +362,6 @@ public class CSProgressBar extends View {
 
 
     }
-
 
 
     //region Getters and Setters
@@ -645,6 +666,43 @@ public class CSProgressBar extends View {
 
     public void setCsSubMarkerDrawableDisabled(Drawable csSubMarkerDrawableDisabled) {
         this.csSubMarkerDrawableDisabled = csSubMarkerDrawableDisabled;
+        postInvalidate();
+    }
+
+    public Drawable getCsUnfilledEndDrawable() {
+        return csUnfilledEndDrawable;
+    }
+
+    public void setCsUnfilledEndDrawable(Drawable csUnfilledEndDrawable) {
+        this.csUnfilledEndDrawable = csUnfilledEndDrawable;
+        postInvalidate();
+    }
+
+    public boolean isCsUnfilledEndDrawableVisible() {
+        return csUnfilledEndDrawableVisible;
+    }
+
+    public void setCsUnfilledEndDrawableVisible(boolean csUnfilledEndDrawableVisible) {
+        this.csUnfilledEndDrawableVisible = csUnfilledEndDrawableVisible;
+        invalidate();
+    }
+
+
+    public float getCsUnfilledEndDrawableWidth() {
+        return csUnfilledEndDrawableWidth;
+    }
+
+    public void setCsUnfilledEndDrawableWidth(float csUnfilledEndDrawableWidth) {
+        this.csUnfilledEndDrawableWidth = csUnfilledEndDrawableWidth;
+        postInvalidate();
+    }
+
+    public float getCsUnfilledEndDrawableHeight() {
+        return csUnfilledEndDrawableHeight;
+    }
+
+    public void setCsUnfilledEndDrawableHeight(float csUnfilledEndDrawableHeight) {
+        this.csUnfilledEndDrawableHeight = csUnfilledEndDrawableHeight;
         postInvalidate();
     }
 
