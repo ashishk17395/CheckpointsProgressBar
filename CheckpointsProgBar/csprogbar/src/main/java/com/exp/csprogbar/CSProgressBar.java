@@ -39,6 +39,7 @@ public class CSProgressBar extends View {
     String csSubMarkers[];
     int csSubMarkerTextColor;
     Drawable csSubMarkerDrawable;
+    Drawable csSubMarkerDrawableDisabled;
     float csSubMarkerTextSize;
     float csSubMarkerHeight;
     float csSubMarkerWidth;
@@ -169,6 +170,11 @@ public class CSProgressBar extends View {
 
             setCsSubMarkerTextColor(typedArray.getColor(R.styleable.CSProgressBar_csSubMarkerTextColor, Color.BLACK));
             setCsSubMarkerDrawable(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawable));
+            if(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawableDisabled)!=null)
+                setCsSubMarkerDrawableDisabled(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawableDisabled));
+            else
+                setCsSubMarkerDrawableDisabled(typedArray.getDrawable(R.styleable.CSProgressBar_csSubMarkerDrawable));
+
             setCsSubMarkerTextSize(typedArray.getDimension(R.styleable.CSProgressBar_csSubMarkerTextSize, 10f));
             setCsSubMarkerHeight(typedArray.getDimension(R.styleable.CSProgressBar_csSubMarkerHeight, 0f));
             setCsSubMarkerWidth(typedArray.getDimension(R.styleable.CSProgressBar_csSubMarkerWidth, 0f));
@@ -253,12 +259,26 @@ public class CSProgressBar extends View {
                 textPaint.setTextSize(csSubMarkerTextSize);
                 textPaint.setTypeface(csSubMarkerTypeface);
                 textPaint.setTextAlign(Paint.Align.CENTER);
+
+
+
                 if (!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i])) {
-                    csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
-                            (int) (barBottom + csSubMarkerBarPadding),
-                            (int) (barWidth + barLeft + csSubMarkerWidth / 2),
-                            (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
-                    csSubMarkerDrawable.draw(canvas);
+                    if(i==clearedCheckPoint+1)
+                    {
+                        csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
+                                (int) (barBottom + csSubMarkerBarPadding),
+                                (int) (barWidth + barLeft + csSubMarkerWidth / 2),
+                                (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
+                        csSubMarkerDrawable.draw(canvas);
+                    }else
+                    {
+                        csSubMarkerDrawableDisabled.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
+                                (int) (barBottom + csSubMarkerBarPadding),
+                                (int) (barWidth + barLeft + csSubMarkerWidth / 2),
+                                (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
+                        csSubMarkerDrawableDisabled.draw(canvas);
+                    }
+
                     if (csSubMarkerTextPaddingBottom != -1f)
                         canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
                     else
@@ -320,6 +340,8 @@ public class CSProgressBar extends View {
 
 
     }
+
+
 
     //region Getters and Setters
     public int getCsProgress() {
@@ -605,6 +627,7 @@ public class CSProgressBar extends View {
 
     public void setCsFilledTextColor(int csFilledTextColor) {
         this.csFilledTextColor = csFilledTextColor;
+        postInvalidate();
     }
 
     public float getCsFilledTextSize() {
@@ -613,6 +636,16 @@ public class CSProgressBar extends View {
 
     public void setCsFilledTextSize(float csFilledTextSize) {
         this.csFilledTextSize = csFilledTextSize;
+        postInvalidate();
+    }
+
+    public Drawable getCsSubMarkerDrawableDisabled() {
+        return csSubMarkerDrawableDisabled;
+    }
+
+    public void setCsSubMarkerDrawableDisabled(Drawable csSubMarkerDrawableDisabled) {
+        this.csSubMarkerDrawableDisabled = csSubMarkerDrawableDisabled;
+        postInvalidate();
     }
 
 

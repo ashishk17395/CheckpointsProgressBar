@@ -22,6 +22,7 @@
         <attr name="csSubMarkers" format="reference"/>
         <attr name="csSubMarkerTextColor" format="color"/>
         <attr name="csSubMarkerDrawable" format="integer"/>
+        <attr name="csSubMarkerDrawableDisabled" format="integer"/>
         <attr name="csSubMarkerTextSize" format="dimension"/>
         <attr name="csSubMarkerHeight" format="dimension"/>
         <attr name="csSubMarkerWidth" format="dimension"/>
