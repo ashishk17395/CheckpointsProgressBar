@@ -24,6 +24,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="0dp"
 
+        app:csSize="200"
         app:csMarkers="@array/markers"
         app:csMarkerTextSize="16sp"
         app:csMarkerBarPadding="5dp"
@@ -53,6 +54,8 @@
         app:csUnfilledEndDrawableVisible="true"
         app:csUnfilledEndDrawableHeight="10dp"
         app:csUnfilledEndDrawableWidth="10dp"
+
+        app:csOffsetLastMarkersBy="5dp"
         />
 
 
