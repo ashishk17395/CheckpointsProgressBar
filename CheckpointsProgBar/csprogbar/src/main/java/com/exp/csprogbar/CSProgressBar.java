@@ -9,9 +9,16 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.TextUtils;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+import android.text.StaticLayout;
 
 import androidx.annotation.Nullable;
 
@@ -67,10 +74,12 @@ public class CSProgressBar extends View {
     private Path path;
     private RectF clippingRect;
     private Paint textPaint;
+    private TextPaint staticTextPaint;
 
     private ProgressBarChangedListener mListener;
     private int clearedCheckPoint = -1;
     private long mUiThreadId;
+    private StaticLayout mStaticLayout;
 
     //region Constructors
     public CSProgressBar(Context context) {
@@ -384,16 +393,36 @@ public class CSProgressBar extends View {
                         , textPaint);
             }
         } else {
-            if (csFilledText != null && !csFilledText.isEmpty()) {
+
+            /*if (csFilledText != null && !csFilledText.isEmpty()) {
                 textPaint.setColor(csFilledTextColor);
                 textPaint.setTextSize(csFilledTextSize);
                 textPaint.setTypeface(csFilledTextTypeface);
                 canvas.drawText(csFilledText, barLeft + cornerRad,
                         barBottom - csBarHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent()
                         , textPaint);
+            }*/
+            if (mStaticLayout != null) {
+                canvas.save();
+                canvas.translate(barLeft + cornerRad, (csBarHeight) / 2 - ((staticTextPaint.descent() - staticTextPaint.ascent()) / 2) - staticTextPaint.descent());
+                mStaticLayout.draw(canvas);
+                canvas.restore();
             }
         }
 
+
+    }
+
+    private void initStaticLayout() {
+        SpannableString spannableString = new SpannableString(csFilledText);
+        if (csFilledText.contains("%"))
+            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, csFilledText.indexOf("%"), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        staticTextPaint = new TextPaint();
+        staticTextPaint.setColor(csFilledTextColor);
+        staticTextPaint.setTextSize(csFilledTextSize);
+//        staticTextPaint.setTypeface(csMarkerTypeface);
+        int width = (int) staticTextPaint.measureText(csFilledText);
+        mStaticLayout = new StaticLayout(spannableString, staticTextPaint, getResources().getDisplayMetrics().widthPixels, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0, false);
 
     }
 
@@ -509,6 +538,8 @@ public class CSProgressBar extends View {
 
     public void setCsFilledText(String csFilledText) {
         this.csFilledText = csFilledText;
+        if (!TextUtils.isEmpty(csFilledText))
+            initStaticLayout();
         postInvalidate();
     }
 
