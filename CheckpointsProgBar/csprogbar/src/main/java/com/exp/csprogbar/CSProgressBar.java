@@ -78,6 +78,7 @@ public class CSProgressBar extends View {
 
     private ProgressBarChangedListener mListener;
     private int clearedCheckPoint = -1;
+    private int lastProgress = -1;
     private long mUiThreadId;
     private StaticLayout mStaticLayout;
 
@@ -380,7 +381,7 @@ public class CSProgressBar extends View {
         canvas.save();
         canvas.clipRect(barLeft, barTop, progWidth + barLeft, barBottom);
         canvas.drawRoundRect(barLeft, barTop, barRight, barBottom, cornerRad, cornerRad, paint);
-        updateProgressChanged();
+        updateProgressChanged(1);
         canvas.restore();
 
         if (csCollapseOnCheckpoints) {
@@ -440,7 +441,7 @@ public class CSProgressBar extends View {
         else
             this.csProgress = csSize;
         invalidate();
-        updateProgressChanged();
+        updateProgressChanged(2);
 
     }
 
@@ -786,10 +787,23 @@ public class CSProgressBar extends View {
     //endregion
 
     //region Listeners
-    private void updateProgressChanged() {
+    private void updateProgressChanged(int from) {
         if (mListener != null) {
-            mListener.onProgressChanged(getCsProgress());
-            updateCheckPointCleared();
+            switch (from)
+            {
+                case 1:
+                    if(csProgress != lastProgress)
+                    {
+                        mListener.onProgressChanged(getCsProgress());
+                        updateCheckPointCleared();
+                        lastProgress = csProgress;
+                    }
+                    break;
+                case 2:
+                    mListener.onProgressChanged(getCsProgress());
+                    updateCheckPointCleared();
+                    break;
+            }
         }
     }
 
