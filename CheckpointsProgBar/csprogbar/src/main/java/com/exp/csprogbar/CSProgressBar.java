@@ -55,6 +55,7 @@ public class CSProgressBar extends View {
     float csSubMarkerTextPaddingBottom;
 
     float csOffsetLastMarkersBy;
+    float csOffsetFirstMarkersBy;
 
     Drawable csUnfilledEndDrawable;
     boolean csUnfilledEndDrawableVisible;
@@ -271,10 +272,14 @@ public class CSProgressBar extends View {
                 textPaint.setAntiAlias(true);
                 textPaint.setTypeface(csMarkerTypeface);
                 textPaint.setTextSize(csMarkerTextSize);
-                if (i == csCheckpoints.length - 1) {
-                    csOffsetLastMarkersBy = csOffsetLastMarkersBy + textPaint.measureText(csMarkers[i])/2 - (barRight - (barWidth + barLeft + csMarkerTextDrawablePadding/2))  ;
+                if (i == 0) {
+                    csOffsetFirstMarkersBy = textPaint.measureText(csMarkers[i]) / 2 - (barWidth + barLeft + csMarkerTextDrawablePadding / 2);
+                    canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) * 1.0f + csOffsetFirstMarkersBy, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
+
+                } else if (i == csCheckpoints.length - 1) {
+                    csOffsetLastMarkersBy = textPaint.measureText(csMarkers[i]) / 2 - (barRight - (barWidth + barLeft + csMarkerTextDrawablePadding / 2));
 //                    csMarkerDrawable.setBounds((int) (barWidth + barLeft - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth + barLeft - csMarkerTextDrawablePadding / 2), (int) csMarkerHeight);
-                    canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2 )) - csOffsetLastMarkersBy, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
+                    canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) - csOffsetLastMarkersBy, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                 } else {
                     canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2)) * 1.0f, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
 //                    csMarkerDrawable.setBounds((int) (barWidth + barLeft - csOffsetLastMarkersBy - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth + barLeft - csMarkerTextDrawablePadding / 2 - csOffsetLastMarkersBy), (int) csMarkerHeight);
@@ -291,7 +296,12 @@ public class CSProgressBar extends View {
                 //enabled disabled subMarkers
                 if (!(csCollapseOnCheckpoints && csProgress > csCheckpoints[i])) {
                     if (i == clearedCheckPoint + 1) {
-                        if (i != csCheckpoints.length - 1) {
+                        if (i == 0) {
+                            csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2 + csOffsetFirstMarkersBy),
+                                    (int) (barBottom + csSubMarkerBarPadding),
+                                    (int) (barWidth + barLeft + csSubMarkerWidth / 2 + csOffsetFirstMarkersBy),
+                                    (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
+                        } else if (i != csCheckpoints.length - 1) {
                             csSubMarkerDrawable.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                                     (int) (barBottom + csSubMarkerBarPadding),
                                     (int) (barWidth + barLeft + csSubMarkerWidth / 2),
@@ -305,7 +315,12 @@ public class CSProgressBar extends View {
                         csSubMarkerDrawable.draw(canvas);
                     } else {
 
-                        if (i != csCheckpoints.length - 1)
+                        if (i == 0)
+                            csSubMarkerDrawableDisabled.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2 + csOffsetFirstMarkersBy),
+                                    (int) (barBottom + csSubMarkerBarPadding),
+                                    (int) (barWidth + barLeft + csSubMarkerWidth / 2 + csOffsetFirstMarkersBy),
+                                    (int) (barBottom + csSubMarkerBarPadding + csSubMarkerHeight));
+                        else if (i != csCheckpoints.length - 1)
                             csSubMarkerDrawableDisabled.setBounds((int) (barWidth + barLeft - csSubMarkerWidth / 2),
                                     (int) (barBottom + csSubMarkerBarPadding),
                                     (int) (barWidth + barLeft + csSubMarkerWidth / 2),
@@ -319,15 +334,20 @@ public class CSProgressBar extends View {
                     }
 
                     if (csSubMarkerTextPaddingBottom != -1f)
-                        if (i != csCheckpoints.length - 1)
+                        if (i == 0)
+                            canvas.drawText(csSubMarkers[i], barWidth + barLeft + csOffsetFirstMarkersBy, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
+                        else if (i != csCheckpoints.length - 1)
                             canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
                         else
                             canvas.drawText(csSubMarkers[i], barWidth + barLeft - csOffsetLastMarkersBy, barBottom + csSubMarkerBarPadding + csSubMarkerHeight - csSubMarkerTextPaddingBottom, textPaint);
 
+                    else if (i == 0)
+                        canvas.drawText(csSubMarkers[i], barWidth + barLeft + csOffsetFirstMarkersBy, barBottom + csSubMarkerBarPadding + csSubMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                     else if (i != csCheckpoints.length - 1)
                         canvas.drawText(csSubMarkers[i], barWidth + barLeft, barBottom + csSubMarkerBarPadding + csSubMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                     else
                         canvas.drawText(csSubMarkers[i], barWidth + barLeft - csOffsetLastMarkersBy, barBottom + csSubMarkerBarPadding + csSubMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
+
 
                 }
             }
@@ -790,11 +810,9 @@ public class CSProgressBar extends View {
     //region Listeners
     private void updateProgressChanged(int from) {
         if (mListener != null) {
-            switch (from)
-            {
+            switch (from) {
                 case 1:
-                    if(csProgress != lastProgress)
-                    {
+                    if (csProgress != lastProgress) {
                         mListener.onProgressChanged(getCsProgress());
                         updateCheckPointCleared();
                         lastProgress = csProgress;
