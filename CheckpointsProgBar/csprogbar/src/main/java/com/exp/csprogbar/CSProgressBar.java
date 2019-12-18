@@ -272,6 +272,7 @@ public class CSProgressBar extends View {
                 textPaint.setTypeface(csMarkerTypeface);
                 textPaint.setTextSize(csMarkerTextSize);
                 if (i == csCheckpoints.length - 1) {
+                    csOffsetLastMarkersBy = csOffsetLastMarkersBy + textPaint.measureText(csMarkers[i])/2 - (barRight - (barWidth + barLeft + csMarkerTextDrawablePadding/2))  ;
 //                    csMarkerDrawable.setBounds((int) (barWidth + barLeft - (csMarkerWidth + csMarkerTextDrawablePadding) / 2), 0, (int) (barWidth + barLeft - csMarkerTextDrawablePadding / 2), (int) csMarkerHeight);
                     canvas.drawText(csMarkers[i], ((int) (barWidth + barLeft + csMarkerTextDrawablePadding / 2 )) - csOffsetLastMarkersBy, csMarkerHeight / 2 + ((textPaint.descent() - textPaint.ascent()) / 2) - textPaint.descent(), textPaint);
                 } else {
